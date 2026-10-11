@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusPulse — Smart Campus Resource & Event Coordination Hub</title>
+  <meta name="description" content="CampusPulse is the premier student resource and event coordination hub featuring real-time campus agendas, smart filtering, interactive schedules, and club initiatives.">
+  <meta property="og:title" content="CampusPulse — Smart Campus Resource & Event Coordination Hub">
+  <meta property="og:description" content="Unify campus life: discover hackathons, research grants, study rooms, club meetups, and academic resources in real time.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#0A0A0A">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <!-- ACCESSIBILITY SKIP LINK -->
+  <a href="#main-content" class="skip-link">Skip to main campus content</a>
+
+  <!-- SPARKLING GOLDEN BACKGROUND PARTICLES -->
+  <div class="glitter-canvas-container" id="glitterContainer" aria-hidden="true"></div>
+
+  <!-- GLOBAL NOTIFICATION TOAST CONTAINER -->
+  <div id="toastContainer" class="toast-shelf" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- STICKY ELEVATED NAVBAR -->
+  <header class="navbar-wrapper" id="topNavbar">
+    <div class="navbar-inner">
+      <a href="#/home" class="brand-link" aria-label="CampusPulse Home">
+        <div class="brand-icon-box">
+          <svg class="brand-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="40" height="40" rx="8" fill="var(--color-gold-deep)"/>
+            <path d="M7 21H13L17 11L23 29L27 21H33" stroke="#0A0A0A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="20" cy="20" r="2" fill="#0A0A0A"/>
+          </svg>
+          <span class="brand-pulse-dot" aria-hidden="true"></span>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">CAMPUS<span class="brand-highlight">PULSE</span></span>
+          <span class="brand-sub">COORDINATION HUB</span>
+        </div>
+      </a>
+
+      <!-- DESKTOP NAVIGATION -->
+      <nav class="nav-links" id="desktopNav" aria-label="Primary Navigation">
+        <a href="#/home" class="nav-link active" data-route="home">Home</a>
+        <a href="#/discover" class="nav-link" data-route="discover">Discover</a>
+        <a href="#/my-activities" class="nav-link" data-route="my-activities">
+          My Activities
+          <span class="nav-counter-pill" id="navSavedBadge">0</span>
+        </a>
+        <a href="#/submit" class="nav-link" data-route="submit">Submit Event</a>
+        <a href="#/how-it-works" class="nav-link" data-route="how-it-works">How It Works</a>
+        <a href="#/about" class="nav-link" data-route="about">About</a>
+        <a href="#/faq" class="nav-link" data-route="faq">FAQ</a>
+      </nav>
+
+      <!-- NAVBAR CONTROLS -->
+      <div class="nav-actions">
+        <!-- USER JOURNEY PROGRESS MINI INDICATOR -->
+        <div class="journey-pill" id="journeyPill" title="Campus Journey Progress: Discover, Save, Inspect, Submit" aria-label="Your Journey Progress">
+          <span class="journey-label">JOURNEY</span>
+          <div class="journey-dots" id="journeyDots">
+            <span class="journey-dot active" title="Step 1: Explore Home"></span>
+            <span class="journey-dot" title="Step 2: Discover Items"></span>
+            <span class="journey-dot" title="Step 3: Save an Activity"></span>
+            <span class="journey-dot" title="Step 4: Submit a Listing"></span>
+          </div>
+        </div>
+
+        <!-- THEME TOGGLE -->
+        <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle between dark and light themes">
+          <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <a href="#/discover" class="btn btn-primary nav-cta-btn">
+          <span>Explore Hub</span>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="btn-arrow-icon" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
+        </a>
+
+        <!-- MOBILE HAMBURGER TOGGLE -->
+        <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-expanded="false" aria-controls="mobileDrawer" aria-label="Open mobile navigation menu">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE NAVIGATION DRAWER -->
+  <div class="mobile-drawer-overlay" id="mobileDrawerOverlay" aria-hidden="true"></div>
+  <aside class="mobile-drawer" id="mobileDrawer" aria-label="Mobile Navigation" aria-hidden="true">
+    <div class="mobile-drawer-header">
+      <div class="brand-text">
+        <span class="brand-title">CAMPUS<span class="brand-highlight">PULSE</span></span>
+      </div>
+      <button type="button" class="mobile-drawer-close" id="mobileDrawerClose" aria-label="Close navigation menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <nav class="mobile-nav-links">
+      <a href="#/home" class="mobile-nav-link" data-route="home">Home</a>
+      <a href="#/discover" class="mobile-nav-link" data-route="discover">Discover Events & Resources</a>
+      <a href="#/my-activities" class="mobile-nav-link" data-route="my-activities">
+        My Activities (<span id="mobileNavSavedBadge">0</span>)
+      </a>
+      <a href="#/submit" class="mobile-nav-link" data-route="submit">Submit New Item</a>
+      <a href="#/how-it-works" class="mobile-nav-link" data-route="how-it-works">How It Works</a>
+      <a href="#/about" class="mobile-nav-link" data-route="about">About & Impact</a>
+      <a href="#/faq" class="mobile-nav-link" data-route="faq">Frequently Asked Questions</a>
+    </nav>
+    <div class="mobile-drawer-footer">
+      <a href="#/discover" class="btn btn-primary btn-block">Jump into Discover</a>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEWPORT ROUTER CONTAINER -->
+  <main id="main-content" class="main-content-flow">
+
+    <!-- ========================================================= -->
+    <!-- 1. PAGE: HOME (#/home) -->
+    <!-- ========================================================= -->
+    <section class="page page-home active" id="page-home" aria-labelledby="home-hero-heading">
+      
+      <!-- HERO SECTION WITH CSS 3D SCENE -->
+      <section class="hero-section">
+        <div class="hero-grid-bg" aria-hidden="true"></div>
+        <div class="container hero-container">
+          <div class="hero-content">
+            <div class="hero-tag-badge">
+              <span class="sparkle-star-svg" aria-hidden="true">
+                <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5L8 0Z"/></svg>
+              </span>
+              <span>SYNCHRONIZED CAMPUS ECOSYSTEM &bull; LIVE 2026</span>
+            </div>
+
+            <h1 class="hero-title" id="home-hero-heading">
+              NEVER MISS A <span class="stroke-gold-text">PULSE</span> ON <span class="italic-serif-gold">YOUR CAMPUS.</span>
+            </h1>
+
+            <p class="hero-lede">
+              The high-velocity central nervous system for university life. Cut through buried email threads and scattered Discord servers with verified hackathons, research grants, club sessions, and study spaces.
+            </p>
+
+            <div class="hero-actions">
+              <a href="#/discover" class="btn btn-primary btn-lg btn-3d">
+                <span>Explore 24+ Live Opportunities</span>
+                <svg viewBox="0 0 20 20" fill="currentColor" class="btn-arrow-icon" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+              </a>
+              <a href="#/how-it-works" class="btn btn-secondary btn-lg">
+                <span>How CampusPulse Works</span>
+              </a>
+            </div>
+
+            <div class="hero-trust-bar">
+              <div class="trust-stat">
+                <span class="trust-stat-num" data-count="14800">14,800+</span>
+                <span class="trust-stat-lbl">Active Students</span>
+              </div>
+              <div class="trust-stat-divider"></div>
+              <div class="trust-stat">
+                <span class="trust-stat-num" data-count="190">190+</span>
+                <span class="trust-stat-lbl">Registered Clubs</span>
+              </div>
+              <div class="trust-stat-divider"></div>
+              <div class="trust-stat">
+                <span class="trust-stat-num" data-count="100">100%</span>
+                <span class="trust-stat-lbl">Verified Student Events</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3D INTERACTIVE HERO CENTERPIECE -->
+          <div class="hero-3d-stage" id="hero3dStage" aria-label="3D Interactive Campus Event Visualizer">
+            <div class="scene-3d" id="hero3dScene">
+              <!-- LAYER 1: ROTATING GOLD POLYHEDRAL CORE -->
+              <div class="gold-cube-3d" id="heroGoldCube">
+                <div class="cube-face cube-front"><span>LIVE</span></div>
+                <div class="cube-face cube-back"><span>SYNC</span></div>
+                <div class="cube-face cube-right"><span>PULSE</span></div>
+                <div class="cube-face cube-left"><span>HUB</span></div>
+                <div class="cube-face cube-top"><span>2026</span></div>
+                <div class="cube-face cube-bottom"><span>PRO</span></div>
+              </div>
+
+              <!-- LAYER 2: FLOATING 3D CARDS WITH PARALLAX -->
+              <div class="floating-ticket ticket-1" data-depth="0.4">
+                <div class="ticket-badge-pill">NEXT 48H</div>
+                <h4 class="ticket-title">AI & Robotics Hackathon</h4>
+                <div class="ticket-meta">
+                  <span>Sat &bull; Turing Hall</span>
+                  <span class="gold-highlight">48 Spots Left</span>
+                </div>
+              </div>
+
+              <div class="floating-ticket ticket-2" data-depth="0.7">
+                <div class="ticket-badge-pill pill-gold">RESEARCH</div>
+                <h4 class="ticket-title">Quantum Lab Fellowship Grant</h4>
+                <div class="ticket-meta">
+                  <span>Apply by Nov 15</span>
+                  <span class="gold-highlight">$4,500 Award</span>
+                </div>
+              </div>
+
+              <div class="floating-ticket ticket-3" data-depth="0.2">
+                <div class="ticket-badge-pill pill-green">COMMUNITY</div>
+                <h4 class="ticket-title">Midnight Study Lounge & Coffee</h4>
+                <div class="ticket-meta">
+                  <span>Everyday &bull; Level 3</span>
+                  <span class="gold-highlight">Open Now</span>
+                </div>
+              </div>
+
+              <!-- ORBITING GOLD RINGS -->
+              <div class="gold-orbit-ring ring-1"></div>
+              <div class="gold-orbit-ring ring-2"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TICKER MARQUEE -->
+      <section class="marquee-strip" aria-label="Campus Bulletins Marquee">
+        <div class="marquee-track">
+          <div class="marquee-content">
+            <span class="marquee-item"><span class="marquee-dot"></span> MIDTERM STUDY SESSIONS AVAILABLE IN SCIENCE LIBRARY B3</span>
+            <span class="marquee-item"><span class="marquee-dot"></span> ANNUAL FINTECH INCUBATOR DEADLINE FRIDAY 5:00 PM</span>
+            <span class="marquee-item"><span class="marquee-dot"></span> CAMPUS SHUTTLE REALTIME TRACKER UPDATED FOR WINTER ROUTES</span>
+            <span class="marquee-item"><span class="marquee-dot"></span> ROBOTICS WORKSHOP RSVP OPEN &bull; MAKERSPACE B</span>
+            <span class="marquee-item"><span class="marquee-dot"></span> GLOBAL SCHOLARSHIPS ROUND 2 APPLICATIONS OPEN</span>
+            <span class="marquee-item"><span class="marquee-dot"></span> FREE BIOCHEMISTRY PEER TUTORING MON & WED 7 PM</span>
+          </div>
+          <div class="marquee-content" aria-hidden="true">
+            <span class="marquee-item"><span class="marquee-dot"></span> MIDTERM STUDY SESSIONS AVAILABLE IN SCIENCE LIBRARY B3</span>
+            <span class="marquee-item"><span class="marquee-dot"></span> ANNUAL FINTECH INCUBATOR DEADLINE FRIDAY 5:00 PM</span>
+            <span class="marquee-item"><span class="marquee-dot"></span> CAMPUS SHUTTLE REALTIME TRACKER UPDATED FOR WINTER ROUTES</span>
+            <span class="marquee-item"><span class="marquee-dot"></span> ROBOTICS WORKSHOP RSVP OPEN &bull; MAKERSPACE B</span>
+            <span class="marquee-item"><span class="marquee-dot"></span> GLOBAL SCHOLARSHIPS ROUND 2 APPLICATIONS OPEN</span>
+            <span class="marquee-item"><span class="marquee-dot"></span> FREE BIOCHEMISTRY PEER TUTORING MON & WED 7 PM</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- THE PROBLEM SECTION -->
+      <section class="section-pad problem-section">
+        <div class="container">
+          <div class="section-header text-center">
+            <span class="section-eyebrow">THE CAMPUS DILEMMA</span>
+            <h2 class="section-title">WHY UNIVERSITY LIFE FEELS SO <span class="italic-serif-gold">FRAGMENTED.</span></h2>
+            <p class="section-desc">Students miss career-defining opportunities every single week simply because announcements are scattered across a dozen disconnected silos.</p>
+          </div>
+
+          <div class="problem-solution-grid">
+            <div class="problem-card">
+              <div class="card-status-badge badge-danger">BEFORE CAMPUSPULSE</div>
+              <h3 class="problem-title">The Information Black Hole</h3>
+              <ul class="problem-list">
+                <li>
+                  <svg viewBox="0 0 20 20" fill="currentColor" class="list-cross-icon" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
+                  <span>100+ unread departmental emails buried in student spam folders.</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 20 20" fill="currentColor" class="list-cross-icon" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
+                  <span>Discord servers and WhatsApp chats with buried pinned messages.</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 20 20" fill="currentColor" class="list-cross-icon" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
+                  <span>Faded paper flyers taped to physical bulletin boards in wet hallways.</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 20 20" fill="currentColor" class="list-cross-icon" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
+                  <span>Zero reminders: realizing a research application closed 2 hours ago.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="solution-card gold-border-card">
+              <div class="card-status-badge badge-gold">WITH CAMPUSPULSE</div>
+              <h3 class="solution-title">The Unified Pulse Engine</h3>
+              <ul class="solution-list">
+                <li>
+                  <svg viewBox="0 0 20 20" fill="currentColor" class="list-check-icon" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                  <span>Real-time searchable catalog with instant filters for your exact major and goals.</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 20 20" fill="currentColor" class="list-check-icon" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                  <span>1-click bookmarks stored locally with calendar export schedule downloader.</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 20 20" fill="currentColor" class="list-check-icon" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                  <span>Student leadership publishing: club presidents broadcast events in 60 seconds.</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 20 20" fill="currentColor" class="list-check-icon" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                  <span>Zero trackers, zero login walls to browse, 100% offline-ready client architecture.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CORE FEATURES WITH VARIED 3D LAYOUTS -->
+      <section class="section-pad features-section">
+        <div class="container">
+          <div class="section-header text-center">
+            <span class="section-eyebrow">ARCHITECTURAL ADVANTAGES</span>
+            <h2 class="section-title">BUILT FOR <span class="stroke-gold-text">HIGH-VELOCITY</span> CAMPUS LIFE.</h2>
+            <p class="section-desc">Every pixel is engineered with tactile feedback, high contrast readability, and real-time responsiveness.</p>
+          </div>
+
+          <div class="features-grid">
+            <div class="feature-card tilt-card" data-tilt>
+              <div class="card-glare"></div>
+              <div class="feature-icon-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </div>
+              <h3 class="feature-name">Sub-Millisecond Search</h3>
+              <p class="feature-text">Search titles, organizers, tags, and venues with live matching and highlighted keywords without server lag.</p>
+              <div class="feature-metric-chip">0ms Latency</div>
+            </div>
+
+            <div class="feature-card tilt-card" data-tilt>
+              <div class="card-glare"></div>
+              <div class="feature-icon-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                </svg>
+              </div>
+              <h3 class="feature-name">Personal Activity Vault</h3>
+              <p class="feature-text">Curate your semester itinerary with local storage bookmarking, simulated RSVPs, and pure CSS category distribution charts.</p>
+              <div class="feature-metric-chip">Local Persistence</div>
+            </div>
+
+            <div class="feature-card tilt-card" data-tilt>
+              <div class="card-glare"></div>
+              <div class="feature-icon-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+              </div>
+              <h3 class="feature-name">Equal Opportunity Access</h3>
+              <p class="feature-text">Underfunded clubs and student research groups get equal spotlight alongside premier university-wide symposia.</p>
+              <div class="feature-metric-chip">Democratized Discovery</div>
+            </div>
+
+            <div class="feature-card tilt-card" data-tilt>
+              <div class="card-glare"></div>
+              <div class="feature-icon-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+              </div>
+              <h3 class="feature-name">Calendar & TXT Export</h3>
+              <p class="feature-text">Export your planned semester schedule directly into a cleanly formatted text agenda in one click via Blob memory.</p>
+              <div class="feature-metric-chip">Instant Export</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- INTERACTIVE MINI DEMO ON HOME -->
+      <section class="section-pad mini-demo-section">
+        <div class="container">
+          <div class="demo-wrapper gold-border-card">
+            <div class="demo-header">
+              <div>
+                <span class="section-eyebrow">TRY IT RIGHT NOW</span>
+                <h3 class="demo-title">Interactive Campus Filter Preview</h3>
+                <p class="demo-subtitle">Filter sample items below or jump directly to the full Discover hub for 24+ opportunities.</p>
+              </div>
+              <a href="#/discover" class="btn btn-primary btn-sm">Open Full Hub &rarr;</a>
+            </div>
+
+            <div class="demo-controls">
+              <div class="demo-chips" id="homeDemoChips">
+                <button type="button" class="chip active" data-filter="all">All Fields</button>
+                <button type="button" class="chip" data-filter="Tech">Tech & AI</button>
+                <button type="button" class="chip" data-filter="Career">Career</button>
+                <button type="button" class="chip" data-filter="Scholarships">Scholarships</button>
+              </div>
+              <input type="text" class="demo-input" id="homeDemoSearch" placeholder="Type keyword (e.g. 'robotics', 'grant', 'design')..." aria-label="Demo search">
+            </div>
+
+            <div class="demo-cards-preview" id="homeDemoPreviewGrid">
+              <!-- Dynamically populated sample cards by script.js -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- USER JOURNEY STEPS -->
+      <section class="section-pad journey-section">
+        <div class="container">
+          <div class="section-header text-center">
+            <span class="section-eyebrow">THE 4-STAGE FLOW</span>
+            <h2 class="section-title">FROM CASUAL BROWSER TO <span class="italic-serif-gold">CAMPUS CONNECTOR.</span></h2>
+          </div>
+
+          <div class="journey-flow-grid">
+            <a href="#/discover" class="journey-card">
+              <div class="journey-number">01</div>
+              <h4 class="journey-title">Scan Discover Hub</h4>
+              <p class="journey-desc">Filter 24+ vetted opportunities by category, date range, popularity score, or resource type.</p>
+              <span class="journey-cta-link">Explore Discover &rarr;</span>
+            </a>
+
+            <div class="journey-card">
+              <div class="journey-number">02</div>
+              <h4 class="journey-title">Inspect & Simulate RSVP</h4>
+              <p class="journey-desc">Open the 3D detail modal to view full venue instructions, seat quotas, and bookmark to your vault.</p>
+              <span class="journey-cta-link">Modal Experience &bull; Instant</span>
+            </div>
+
+            <a href="#/my-activities" class="journey-card">
+              <div class="journey-number">03</div>
+              <h4 class="journey-title">Manage Activities</h4>
+              <p class="journey-desc">Track saved dates, review your weekly agenda, visualize category breakdowns, and export to TXT.</p>
+              <span class="journey-cta-link">View My Activities &rarr;</span>
+            </a>
+
+            <a href="#/submit" class="journey-card">
+              <div class="journey-number">04</div>
+              <h4 class="journey-title">Publish for Peers</h4>
+              <p class="journey-desc">Hosting an event or study session? Submit it with live card preview and broadcast it immediately.</p>
+              <span class="journey-cta-link">Create Submission &rarr;</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- BENEFITS BY USER GROUP -->
+      <section class="section-pad user-groups-section">
+        <div class="container">
+          <div class="section-header text-center">
+            <span class="section-eyebrow">TAILORED IMPACT</span>
+            <h2 class="section-title">DESIGNED FOR EVERY <span class="stroke-gold-text">CAMPUS ROLE.</span></h2>
+          </div>
+
+          <div class="user-groups-grid">
+            <div class="group-card">
+              <div class="group-tag">FIRST-YEARS & FRESHMEN</div>
+              <h3 class="group-title">Fast-Track Your Network</h3>
+              <p class="group-text">Eliminate the first-semester intimidation factor. Discover orientation workshops, friendly study groups, and beginner-welcoming clubs with zero friction.</p>
+            </div>
+
+            <div class="group-card">
+              <div class="group-tag">STUDENT LEADERS & CLUBS</div>
+              <h3 class="group-title">Fill Every Event Seat</h3>
+              <p class="group-text">Stop relying on algorithms or hallway flyers. Publish once to CampusPulse and reach thousands of verified peers actively seeking events.</p>
+            </div>
+
+            <div class="group-card">
+              <div class="group-tag">COMMUTER STUDENTS</div>
+              <h3 class="group-title">Optimize Campus Trips</h3>
+              <p class="group-text">Plan your days on campus effectively. Bundle workshops, club meetings, and open study lounges around your lecture schedule.</p>
+            </div>
+
+            <div class="group-card">
+              <div class="group-tag">RESEARCHERS & SCHOLARS</div>
+              <h3 class="group-title">Find Grants & Fellowships</h3>
+              <p class="group-text">Never miss application windows for lab fellowships, faculty travel awards, or sponsored conference stipends.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FICTIONAL STUDENT SCENARIOS / TESTIMONIALS -->
+      <section class="section-pad testimonials-section">
+        <div class="container">
+          <div class="section-header text-center">
+            <span class="section-eyebrow">STUDENT EXPERIENCES &bull; FICTIONAL ILLUSTRATIONS</span>
+            <h2 class="section-title">WHAT CAMPUS COORDINATION <span class="italic-serif-gold">LOOKS LIKE.</span></h2>
+          </div>
+
+          <div class="testimonials-grid">
+            <div class="testimonial-card">
+              <div class="quote-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              <blockquote class="quote-text">
+                "As an engineering sophomore, I found out about the AI Robotics hackathon through CampusPulse when our departmental emails completely buried it. My team ended up placing 2nd!"
+              </blockquote>
+              <div class="quote-author">
+                <div class="author-avatar-gold">MC</div>
+                <div>
+                  <div class="author-name">Maya Chen</div>
+                  <div class="author-role">Computer Science &bull; Class of '27</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="testimonial-card">
+              <div class="quote-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              <blockquote class="quote-text">
+                "Our pre-law society used to spend hours pasting paper flyers. With the Submit portal, our speaker series hit full capacity in under 24 hours. The local schedule export is incredible."
+              </blockquote>
+              <div class="quote-author">
+                <div class="author-avatar-gold">JP</div>
+                <div>
+                  <div class="author-name">Jordan Patel</div>
+                  <div class="author-role">President, Pre-Law Society</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="testimonial-card">
+              <div class="quote-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              <blockquote class="quote-text">
+                "I commute 45 minutes to campus every day. Being able to filter for 'Today' and find open quiet rooms or quick faculty resume clinics turned dead campus gaps into productive milestones."
+              </blockquote>
+              <div class="quote-author">
+                <div class="author-avatar-gold">ER</div>
+                <div>
+                  <div class="author-name">Elena Rostova</div>
+                  <div class="author-role">Biochemistry &bull; Class of '26</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ PREVIEW -->
+      <section class="section-pad home-faq-preview">
+        <div class="container">
+          <div class="faq-preview-box gold-border-card">
+            <div>
+              <span class="section-eyebrow">HAVE QUESTIONS?</span>
+              <h3 class="faq-preview-title">Everything You Need to Know About CampusPulse</h3>
+              <p class="faq-preview-text">Learn how bookmark persistence works, how to submit your club's events, and our privacy-first philosophy.</p>
+            </div>
+            <a href="#/faq" class="btn btn-secondary btn-lg">Browse Full 8+ FAQs &rarr;</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- FINAL CTA ON HOME -->
+      <section class="section-pad final-cta-section">
+        <div class="container text-center">
+          <div class="cta-banner-card gold-border-card">
+            <span class="sparkle-star-svg big-sparkle" aria-hidden="true">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5L8 0Z"/></svg>
+            </span>
+            <h2 class="cta-banner-title">READY TO SYNC YOUR CAMPUS LIFE?</h2>
+            <p class="cta-banner-desc">Explore 24+ live events, workshops, research opportunities, and quiet study spots right now.</p>
+            <div class="cta-banner-buttons">
+              <a href="#/discover" class="btn btn-primary btn-lg btn-3d">
+                <span>Launch Discover Hub</span>
+              </a>
+              <a href="#/submit" class="btn btn-secondary btn-lg">
+                <span>Submit Your Club Event</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 2. PAGE: DISCOVER (#/discover) -->
+    <!-- ========================================================= -->
+    <section class="page page-discover" id="page-discover" aria-labelledby="discover-heading">
+      <div class="container page-container">
+        <!-- PAGE HEADER -->
+        <div class="page-title-banner">
+          <div>
+            <span class="section-eyebrow">CAMPUSPULSE CENTRAL DIRECTORY</span>
+            <h1 class="page-title" id="discover-heading">DISCOVER <span class="stroke-gold-text">OPPORTUNITIES.</span></h1>
+            <p class="page-desc">24+ curated campus events, research grants, skill workshops, student services, and study sessions.</p>
+          </div>
+          <div class="discover-top-actions">
+            <a href="#/submit" class="btn btn-primary btn-sm">
+              <svg viewBox="0 0 20 20" fill="currentColor" class="btn-icon" aria-hidden="true"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+              <span>Submit Event</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- SEARCH AND FILTER BAR -->
+        <div class="filter-dashboard-card gold-border-card">
+          <!-- TOP SEARCH ROW -->
+          <div class="search-input-group">
+            <div class="search-input-wrapper">
+              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input 
+                type="search" 
+                id="discoverSearchInput" 
+                class="form-input search-input" 
+                placeholder="Search by title, tag, organizer, or venue (e.g., 'hackathon', 'Turing Hall', 'fellowship')..." 
+                aria-label="Search campus events and resources"
+              >
+              <button type="button" class="search-clear-btn" id="searchClearBtn" aria-label="Clear search input" style="display:none;">&times;</button>
+            </div>
+
+            <!-- SORT CONTROLS -->
+            <div class="filter-select-group">
+              <label for="discoverSortSelect" class="visually-hidden">Sort results by</label>
+              <select id="discoverSortSelect" class="form-select" aria-label="Sort options">
+                <option value="soonest">Sort: Soonest Date</option>
+                <option value="popular">Sort: Most Popular</option>
+                <option value="latest">Sort: Latest Added</option>
+                <option value="alphabetical">Sort: Title (A–Z)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- SECOND ROW: TOGGLES AND QUICK PRESETS -->
+          <div class="filter-sub-bar">
+            <!-- TYPE TOGGLE (ALL / EVENTS / RESOURCES) -->
+            <div class="segmented-control" role="group" aria-label="Filter by type">
+              <button type="button" class="seg-btn active" data-type="all">All Types</button>
+              <button type="button" class="seg-btn" data-type="event">Events Only</button>
+              <button type="button" class="seg-btn" data-type="resource">Resources Only</button>
+            </div>
+
+            <!-- THIS WEEK TOGGLE -->
+            <label class="toggle-checkbox-label">
+              <input type="checkbox" id="thisWeekCheckbox" class="custom-checkbox">
+              <span class="custom-checkbox-ui"></span>
+              <span class="toggle-text">This Week Only</span>
+            </label>
+
+            <!-- VIEW MODE TOGGLE (GRID VS LIST) -->
+            <div class="view-mode-group" role="group" aria-label="View format">
+              <button type="button" class="view-btn active" id="viewModeGrid" aria-label="Grid view" title="Grid View">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="14" width="7" height="7"></rect>
+                  <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+              </button>
+              <button type="button" class="view-btn" id="viewModeList" aria-label="List view" title="List View">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="8" y1="6" x2="21" y2="6"></line>
+                  <line x1="8" y1="12" x2="21" y2="12"></line>
+                  <line x1="8" y1="18" x2="21" y2="18"></line>
+                  <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                  <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                  <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- CATEGORY CHIPS SCROLLER -->
+          <div class="category-chips-wrapper">
+            <span class="chips-label">CATEGORIES:</span>
+            <div class="category-chips-list" id="categoryChipsList" role="tablist" aria-label="Category Filters">
+              <!-- Dynamically generated chips with counts -->
+            </div>
+          </div>
+        </div>
+
+        <!-- RESULTS META BAR -->
+        <div class="results-meta-bar">
+          <div class="results-count-text" id="resultsCountText">
+            Showing <strong>24</strong> campus opportunities
+          </div>
+          <button type="button" class="btn-text-gold" id="clearAllFiltersBtn" style="display:none;">
+            Reset All Filters
+          </button>
+        </div>
+
+        <!-- CARDS CONTAINER (GRID OR LIST) -->
+        <div class="discover-cards-grid" id="discoverCardsGrid" aria-live="polite">
+          <!-- Populated by script.js -->
+        </div>
+
+        <!-- EMPTY STATE (WHEN NO MATCHES) -->
+        <div class="empty-state-card" id="discoverEmptyState" style="display:none;">
+          <div class="empty-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              <line x1="8" y1="11" x2="14" y2="11"></line>
+            </svg>
+          </div>
+          <h3 class="empty-title">No Campus Matches Found</h3>
+          <p class="empty-desc">We couldn't find any opportunities matching your active filters or keywords. Try expanding your search terms.</p>
+          <div class="empty-actions">
+            <button type="button" class="btn btn-primary" id="emptyResetBtn">Clear All Filters</button>
+            <a href="#/submit" class="btn btn-secondary">Submit New Opportunity</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 3. PAGE: MY ACTIVITIES (#/my-activities) -->
+    <!-- ========================================================= -->
+    <section class="page page-my-activities" id="page-my-activities" aria-labelledby="my-activities-heading">
+      <div class="container page-container">
+        <!-- HEADER -->
+        <div class="page-title-banner">
+          <div>
+            <span class="section-eyebrow">YOUR PERSONAL SEMESTER ITINERARY</span>
+            <h1 class="page-title" id="my-activities-heading">MY <span class="stroke-gold-text">ACTIVITIES.</span></h1>
+            <p class="page-desc">Track saved events, monitor upcoming deadlines, review your submitted opportunities, and export your schedule.</p>
+          </div>
+          <div class="my-activities-header-actions">
+            <button type="button" class="btn btn-secondary btn-sm" id="exportScheduleBtn" title="Download text schedule file">
+              <svg viewBox="0 0 20 20" fill="currentColor" class="btn-icon" aria-hidden="true"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+              <span>Export List (.txt)</span>
+            </button>
+            <button type="button" class="btn btn-danger-outline btn-sm" id="clearAllActivitiesBtn">
+              Clear All Saved
+            </button>
+          </div>
+        </div>
+
+        <!-- STATS & CATEGORY CHARTS DASHBOARD -->
+        <div class="stats-overview-grid">
+          <div class="stat-box gold-border-card">
+            <div class="stat-number" id="statsSavedCount">0</div>
+            <div class="stat-label">Saved Opportunities</div>
+            <div class="stat-sub">Locally bookmarked</div>
+          </div>
+          <div class="stat-box gold-border-card">
+            <div class="stat-number" id="statsUpcomingCount">0</div>
+            <div class="stat-label">Upcoming This Week</div>
+            <div class="stat-sub">Immediate focus</div>
+          </div>
+          <div class="stat-box gold-border-card">
+            <div class="stat-number" id="statsSubmittedCount">0</div>
+            <div class="stat-label">Created By You</div>
+            <div class="stat-sub">Published to hub</div>
+          </div>
+        </div>
+
+        <!-- PURE CSS CATEGORY BREAKDOWN CHART -->
+        <div class="category-chart-card gold-border-card">
+          <div class="chart-header">
+            <h3 class="chart-title">Saved Category Breakdown</h3>
+            <span class="chart-subtitle" id="chartTotalLabel">Based on 0 items</span>
+          </div>
+          <div class="css-chart-bars" id="cssCategoryBarsContainer">
+            <!-- Dynamically generated bars with pure CSS -->
+          </div>
+        </div>
+
+        <!-- ACTIVITIES TABS (SAVED / UPCOMING / SUBMITTED) -->
+        <div class="activities-tabs-bar">
+          <div class="segmented-control" role="tablist">
+            <button type="button" class="seg-btn active" id="tabSaved" data-tab="saved" role="tab" aria-selected="true">
+              Bookmarked Items (<span id="tabSavedCount">0</span>)
+            </button>
+            <button type="button" class="seg-btn" id="tabUpcoming" data-tab="upcoming" role="tab" aria-selected="false">
+              Upcoming Soon (<span id="tabUpcomingCount">0</span>)
+            </button>
+            <button type="button" class="seg-btn" id="tabSubmitted" data-tab="submitted" role="tab" aria-selected="false">
+              Submitted By Me (<span id="tabSubmittedCount">0</span>)
+            </button>
+          </div>
+
+          <!-- ACTIVITIES SORT -->
+          <div class="activities-sort-wrap">
+            <label for="activitiesSortSelect" class="visually-hidden">Sort my activities</label>
+            <select id="activitiesSortSelect" class="form-select form-select-sm">
+              <option value="soonest">Sort: Soonest</option>
+              <option value="title">Sort: Title (A–Z)</option>
+              <option value="popular">Sort: Popularity</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ACTIVITIES CARDS LIST -->
+        <div class="activities-cards-container" id="activitiesCardsContainer" aria-live="polite">
+          <!-- Populated by script.js -->
+        </div>
+
+        <!-- EMPTY STATE FOR MY ACTIVITIES -->
+        <div class="empty-state-card" id="activitiesEmptyState" style="display:none;">
+          <div class="empty-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </div>
+          <h3 class="empty-title" id="activitiesEmptyTitle">No Saved Activities Yet</h3>
+          <p class="empty-desc" id="activitiesEmptyDesc">You haven't bookmarked any events or study resources yet. Explore the Discover hub to build your customized semester calendar.</p>
+          <div class="empty-actions">
+            <a href="#/discover" class="btn btn-primary" id="activitiesEmptyAction">Browse Opportunities</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 4. PAGE: SUBMIT (#/submit) -->
+    <!-- ========================================================= -->
+    <section class="page page-submit" id="page-submit" aria-labelledby="submit-heading">
+      <div class="container page-container">
+        <!-- HEADER -->
+        <div class="page-title-banner">
+          <div>
+            <span class="section-eyebrow">COMMUNITY PUBLISHING GATEWAY</span>
+            <h1 class="page-title" id="submit-heading">SUBMIT AN <span class="stroke-gold-text">OPPORTUNITY.</span></h1>
+            <p class="page-desc">Empower your campus. Post a hackathon, study session, club workshop, or student service. Appears instantly in Discover.</p>
+          </div>
+          <div class="badge-local-note">
+            <svg viewBox="0 0 20 20" fill="currentColor" class="mini-info-icon" aria-hidden="true"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+            <span>Client-side demo: Saved to your local session & storage.</span>
+          </div>
+        </div>
+
+        <div class="submit-layout-grid">
+          <!-- SUBMISSION FORM -->
+          <div class="submit-form-panel gold-border-card">
+            <form id="submissionForm" novalidate>
+              <!-- TITLE -->
+              <div class="form-group">
+                <label for="submitTitle" class="form-label">
+                  Activity Title <span class="required-star">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  id="submitTitle" 
+                  name="title" 
+                  class="form-input" 
+                  placeholder="e.g., Quantum Computing Primer & Lab Tour" 
+                  required 
+                  maxlength="90"
+                >
+                <div class="form-error" id="errorTitle" aria-live="polite"></div>
+              </div>
+
+              <!-- TYPE & CATEGORY ROW -->
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="submitType" class="form-label">
+                    Format Type <span class="required-star">*</span>
+                  </label>
+                  <select id="submitType" name="type" class="form-select" required>
+                    <option value="event">Event (Specific date & time)</option>
+                    <option value="resource">Ongoing Resource / Service</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="submitCategory" class="form-label">
+                    Category <span class="required-star">*</span>
+                  </label>
+                  <select id="submitCategory" name="category" class="form-select" required>
+                    <option value="Academic">Academic</option>
+                    <option value="Tech">Tech</option>
+                    <option value="Career">Career</option>
+                    <option value="Clubs">Clubs</option>
+                    <option value="Wellness">Wellness</option>
+                    <option value="Scholarships">Scholarships</option>
+                    <option value="Study Groups">Study Groups</option>
+                    <option value="Resources">Resources</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- DATE & TIME ROW -->
+              <div class="form-row-2" id="dateTimeRow">
+                <div class="form-group">
+                  <label for="submitDate" class="form-label">
+                    Date <span class="required-star">*</span>
+                  </label>
+                  <input type="date" id="submitDate" name="date" class="form-input" required>
+                  <div class="form-error" id="errorDate" aria-live="polite"></div>
+                </div>
+
+                <div class="form-group">
+                  <label for="submitTime" class="form-label">
+                    Time / Hours <span class="required-star">*</span>
+                  </label>
+                  <input type="text" id="submitTime" name="time" class="form-input" placeholder="e.g., 6:00 PM – 8:30 PM" required>
+                  <div class="form-error" id="errorTime" aria-live="polite"></div>
+                </div>
+              </div>
+
+              <!-- VENUE & ORGANIZER ROW -->
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="submitVenue" class="form-label">
+                    Venue / Location <span class="required-star">*</span>
+                  </label>
+                  <input type="text" id="submitVenue" name="venue" class="form-input" placeholder="e.g., Turing Hall Room 302 / Zoom" required>
+                  <div class="form-error" id="errorVenue" aria-live="polite"></div>
+                </div>
+
+                <div class="form-group">
+                  <label for="submitOrganizer" class="form-label">
+                    Host / Club Name <span class="required-star">*</span>
+                  </label>
+                  <input type="text" id="submitOrganizer" name="organizer" class="form-input" placeholder="e.g., ACM Student Chapter" required>
+                  <div class="form-error" id="errorOrganizer" aria-live="polite"></div>
+                </div>
+              </div>
+
+              <!-- DESCRIPTION -->
+              <div class="form-group">
+                <div class="label-with-counter">
+                  <label for="submitDescription" class="form-label">
+                    Detailed Overview <span class="required-star">*</span>
+                  </label>
+                  <span class="char-counter" id="descCharCount">0 / 30 min</span>
+                </div>
+                <textarea 
+                  id="submitDescription" 
+                  name="description" 
+                  class="form-textarea" 
+                  rows="4" 
+                  placeholder="Provide an overview of the event, what attendees should bring, who is eligible, and key takeaways (minimum 30 characters)..." 
+                  required
+                ></textarea>
+                <div class="form-error" id="errorDescription" aria-live="polite"></div>
+              </div>
+
+              <!-- TAGS & CONTACT EMAIL -->
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="submitTags" class="form-label">
+                    Tags (Comma-separated)
+                  </label>
+                  <input type="text" id="submitTags" name="tags" class="form-input" placeholder="e.g., python, networking, free-pizza, all-majors">
+                  <span class="form-hint">Add 2-5 keywords to boost discoverability.</span>
+                </div>
+
+                <div class="form-group">
+                  <label for="submitContact" class="form-label">
+                    Organizer Contact Email <span class="required-star">*</span>
+                  </label>
+                  <input type="email" id="submitContact" name="contact" class="form-input" placeholder="club-lead@campus.edu" required>
+                  <div class="form-error" id="errorContact" aria-live="polite"></div>
+                </div>
+              </div>
+
+              <!-- FORM SUBMIT BUTTON -->
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-lg btn-3d" id="submitFormBtn">
+                  <span>Publish to CampusPulse</span>
+                  <svg viewBox="0 0 20 20" fill="currentColor" class="btn-icon" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd"/></svg>
+                </button>
+                <button type="button" class="btn btn-secondary" id="resetFormBtn">Clear Form</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- LIVE PREVIEW CARD PANEL -->
+          <div class="submit-preview-panel">
+            <div class="preview-sticky-box">
+              <div class="preview-header">
+                <span class="preview-badge">REAL-TIME PREVIEW</span>
+                <span class="preview-hint">This is how your listing appears in Discover:</span>
+              </div>
+              <div class="live-preview-card" id="livePreviewCard">
+                <!-- Dynamically updated card representation -->
+              </div>
+              <div class="preview-tip-card">
+                <h4 class="tip-title">Tips for High Attendance:</h4>
+                <ul class="tip-list">
+                  <li>List exact building names and room numbers.</li>
+                  <li>Mention perks like free food, mentor reviews, or certifications.</li>
+                  <li>Keep tag names concise and lowercase.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 5. PAGE: HOW IT WORKS (#/how-it-works) -->
+    <!-- ========================================================= -->
+    <section class="page page-how-it-works" id="page-how-it-works" aria-labelledby="how-it-works-heading">
+      <div class="container page-container">
+        <div class="page-title-banner text-center">
+          <span class="section-eyebrow">STEP-BY-STEP OPERATION</span>
+          <h1 class="page-title" id="how-it-works-heading">HOW CAMPUSPULSE <span class="stroke-gold-text">OPERATES.</span></h1>
+          <p class="page-desc">Engineered for seamless campus synchronization without login barriers or platform friction.</p>
+        </div>
+
+        <!-- INTERACTIVE STEPPER -->
+        <div class="stepper-container">
+          <div class="stepper-nav" role="tablist" aria-label="How it works interactive stages">
+            <button type="button" class="step-btn active" data-step="1">
+              <span class="step-num">01</span>
+              <span class="step-title">Discover</span>
+            </button>
+            <button type="button" class="step-btn" data-step="2">
+              <span class="step-num">02</span>
+              <span class="step-title">Inspect</span>
+            </button>
+            <button type="button" class="step-btn" data-step="3">
+              <span class="step-num">03</span>
+              <span class="step-title">Save & Plan</span>
+            </button>
+            <button type="button" class="step-btn" data-step="4">
+              <span class="step-num">04</span>
+              <span class="step-title">Publish</span>
+            </button>
+            <button type="button" class="step-btn" data-step="5">
+              <span class="step-num">05</span>
+              <span class="step-title">Export</span>
+            </button>
+          </div>
+
+          <!-- STEP DETAIL DISPLAY -->
+          <div class="step-detail-card gold-border-card" id="stepDetailCard">
+            <div class="step-detail-grid">
+              <div class="step-info">
+                <span class="step-badge" id="stepCurrentBadge">STEP 1 OF 5</span>
+                <h3 class="step-heading" id="stepCurrentTitle">Discover & Filter Campus Opportunities</h3>
+                <p class="step-text" id="stepCurrentText">
+                  Browse over 24 hand-curated listings spanning STEM workshops, student government townhalls, career fairs, and mental wellness retreats. Use instant debounce search to filter by major, venue, or urgency in microseconds.
+                </p>
+                <div class="step-actions">
+                  <a href="#/discover" class="btn btn-primary" id="stepActionBtn">Go to Discover Hub &rarr;</a>
+                </div>
+              </div>
+              <div class="step-visual" id="stepCurrentVisual">
+                <!-- Visual mock demonstration -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CAMPUS ECOSYSTEM ARCHITECTURE -->
+        <div class="architecture-section">
+          <div class="section-header text-center">
+            <span class="section-eyebrow">UNDER THE HOOD</span>
+            <h2 class="section-title">A PRIVACY-FIRST, CLIENT-POWERED ENGINE</h2>
+          </div>
+
+          <div class="arch-cards-grid">
+            <div class="arch-card">
+              <div class="arch-icon">01</div>
+              <h4 class="arch-name">Zero Mandatory Authentication</h4>
+              <p class="arch-desc">No corporate logins or passwords required to find opportunities. Every student can discover immediately.</p>
+            </div>
+            <div class="arch-card">
+              <div class="arch-icon">02</div>
+              <h4 class="arch-name">Local State Persistence</h4>
+              <p class="arch-desc">Bookmarks and custom submissions live securely in your browser's localStorage, ready even when offline.</p>
+            </div>
+            <div class="arch-card">
+              <div class="arch-icon">03</div>
+              <h4 class="arch-name">Sub-Millisecond DOM Rendering</h4>
+              <p class="arch-desc">Lightweight pure vanilla DOM architecture ensures snappy transitions even on older mobile devices.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 6. PAGE: ABOUT & IMPACT (#/about) -->
+    <!-- ========================================================= -->
+    <section class="page page-about" id="page-about" aria-labelledby="about-heading">
+      <div class="container page-container">
+        <div class="page-title-banner">
+          <div>
+            <span class="section-eyebrow">OUR CAMPUS MISSION</span>
+            <h1 class="page-title" id="about-heading">DEMOCRATIZING CAMPUS <span class="stroke-gold-text">ACCESS.</span></h1>
+            <p class="page-desc">CampusPulse was conceived at the intersection of student ambition, design craft, and campus solidarity.</p>
+          </div>
+        </div>
+
+        <!-- MISSION SPLIT -->
+        <div class="about-hero-grid gold-border-card">
+          <div class="about-hero-text">
+            <h2 class="about-heading-lg">Every student deserves equal access to university opportunities.</h2>
+            <p>
+              In large university campuses, institutional information inequality is a real problem. First-generation students, commuters, and transfers often miss out on funded fellowships, club officer elections, and lab openings simply because they don't have existing social connections to pass the flyer.
+            </p>
+            <p>
+              CampusPulse levels the playing field by providing a single, open, beautifully designed hub where any organization can publish and any student can discover without barriers.
+            </p>
+          </div>
+          <div class="about-hero-stats">
+            <div class="about-stat-item">
+              <span class="about-stat-num">4,800+</span>
+              <span class="about-stat-lbl">Active Semester Users</span>
+              <span class="stat-disclaimer">(Illustrative)</span>
+            </div>
+            <div class="about-stat-item">
+              <span class="about-stat-num">190+</span>
+              <span class="about-stat-lbl">Student Clubs Represented</span>
+              <span class="stat-disclaimer">(Illustrative)</span>
+            </div>
+            <div class="about-stat-item">
+              <span class="about-stat-num">42 hrs</span>
+              <span class="about-stat-lbl">Saved Per Student Per Term</span>
+              <span class="stat-disclaimer">(Illustrative)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACCESSIBILITY COMMITMENT -->
+        <div class="accessibility-card gold-border-card">
+          <div class="acc-header">
+            <div class="acc-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <div>
+              <h3 class="acc-title">Our Accessibility & Inclusivity Commitments</h3>
+              <p class="acc-sub">Engineered to conform with WCAG AA accessibility standards.</p>
+            </div>
+          </div>
+          <div class="acc-grid">
+            <div class="acc-item">
+              <strong>High Contrast Ratios:</strong> Both Dark (Yellow on Black) and Light (Yellow on White) themes are strictly calibrated for readability.
+            </div>
+            <div class="acc-item">
+              <strong>Complete Keyboard Operability:</strong> All interactive modals, filters, tabs, and drawers feature visible focus rings and ESC handlers.
+            </div>
+            <div class="acc-item">
+              <strong>Motion Reduction:</strong> Respects <code>prefers-reduced-motion</code> by pausing particle spawners and 3D tilt effects automatically.
+            </div>
+            <div class="acc-item">
+              <strong>Screen Reader Accessible:</strong> Equipped with ARIA live regions, semantic landmarks, and skip links.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 7. PAGE: FAQ (#/faq) -->
+    <!-- ========================================================= -->
+    <section class="page page-faq" id="page-faq" aria-labelledby="faq-heading">
+      <div class="container page-container">
+        <div class="page-title-banner text-center">
+          <span class="section-eyebrow">COMMONLY ASKED QUESTIONS</span>
+          <h1 class="page-title" id="faq-heading">FREQUENTLY ASKED <span class="stroke-gold-text">QUESTIONS.</span></h1>
+          <p class="page-desc">Have questions about saving activities, submitting club events, or offline usage? We have answers.</p>
+        </div>
+
+        <!-- FAQ SEARCH BAR -->
+        <div class="faq-search-wrapper">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="search" 
+            id="faqSearchInput" 
+            class="form-input search-input" 
+            placeholder="Search questions (e.g. 'export', 'bookmark', 'cost', 'submit')..." 
+            aria-label="Filter frequently asked questions"
+          >
+          <span class="faq-count-pill" id="faqMatchCount">9 Questions</span>
+        </div>
+
+        <!-- FAQ ACCORDION LIST -->
+        <div class="faq-accordion-container" id="faqAccordionContainer">
+          <!-- Item 1 -->
+          <div class="faq-accordion-item" data-faq-index="0">
+            <button type="button" class="faq-question-btn" aria-expanded="false" aria-controls="faq-ans-0">
+              <span class="faq-q-text">Is CampusPulse completely free for students and university clubs?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq-answer-panel" id="faq-ans-0" hidden>
+              <div class="faq-answer-inner">
+                Yes, 100% free. CampusPulse is open for all undergraduate and graduate students, registered campus clubs, university departments, and student initiatives with zero subscription fees or advertising paywalls.
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="faq-accordion-item" data-faq-index="1">
+            <button type="button" class="faq-question-btn" aria-expanded="false" aria-controls="faq-ans-1">
+              <span class="faq-q-text">How does the bookmarking and "My Activities" saving work?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq-answer-panel" id="faq-ans-1" hidden>
+              <div class="faq-answer-inner">
+                Whenever you click the heart or bookmark icon on any opportunity card or modal, it is immediately serialized into your browser's persistent LocalStorage. Your saved itinerary remains accessible even when you close the tab or return next week.
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="faq-accordion-item" data-faq-index="2">
+            <button type="button" class="faq-question-btn" aria-expanded="false" aria-controls="faq-ans-2">
+              <span class="faq-q-text">How do I export my semester schedule to my calendar or files?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq-answer-panel" id="faq-ans-2" hidden>
+              <div class="faq-answer-inner">
+                On the "My Activities" page, click the "Export List (.txt)" button in the top header. CampusPulse dynamically creates a downloadable text schedule summarizing every saved event, venue, date, time, and organizer via browser Blob technology.
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 4 -->
+          <div class="faq-accordion-item" data-faq-index="3">
+            <button type="button" class="faq-question-btn" aria-expanded="false" aria-controls="faq-ans-3">
+              <span class="faq-q-text">Can any student club or organization submit an event?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq-answer-panel" id="faq-ans-3" hidden>
+              <div class="faq-answer-inner">
+                Yes! Head to the "Submit Event" tab, fill out the verified submission form, review your live preview card, and click publish. Your listing will appear right away across the Discover portal and in your personal submitted activities tab.
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 5 -->
+          <div class="faq-accordion-item" data-faq-index="4">
+            <button type="button" class="faq-question-btn" aria-expanded="false" aria-controls="faq-ans-4">
+              <span class="faq-q-text">Does CampusPulse work offline without an active internet connection?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq-answer-panel" id="faq-ans-4" hidden>
+              <div class="faq-answer-inner">
+                Yes! CampusPulse is built purely with vanilla HTML5, CSS3, and JavaScript with zero external CDN dependencies, remote fonts, or network API blockers. Once loaded or opened as a local file, it functions offline seamlessly.
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 6 -->
+          <div class="faq-accordion-item" data-faq-index="5">
+            <button type="button" class="faq-question-btn" aria-expanded="false" aria-controls="faq-ans-5">
+              <span class="faq-q-text">What is the difference between an Event and an Ongoing Resource?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq-answer-panel" id="faq-ans-5" hidden>
+              <div class="faq-answer-inner">
+                An "Event" happens at a designated calendar date and time (e.g. a Hackathon on Saturday or a Guest Lecture). An "Ongoing Resource" represents recurring student facilities like quiet study lounges, mental health peer lines, or makerspace open hours.
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 7 -->
+          <div class="faq-accordion-item" data-faq-index="6">
+            <button type="button" class="faq-question-btn" aria-expanded="false" aria-controls="faq-ans-6">
+              <span class="faq-q-text">How is student privacy protected?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq-answer-panel" id="faq-ans-6" hidden>
+              <div class="faq-answer-inner">
+                We believe in zero surveillance. There are no tracking pixels, telemetry beacons, or third-party ad scripts. Your bookmarks and local submissions never leave your personal browser storage.
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 8 -->
+          <div class="faq-accordion-item" data-faq-index="7">
+            <button type="button" class="faq-question-btn" aria-expanded="false" aria-controls="faq-ans-7">
+              <span class="faq-q-text">Can I edit or delete opportunities that I personally submitted?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq-answer-panel" id="faq-ans-7" hidden>
+              <div class="faq-answer-inner">
+                Yes! Any item submitted by you in this browser session is labeled with a "Your Submission" badge. In "My Activities &gt; Submitted By Me", you can delete or edit your listings with a single click.
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 9 -->
+          <div class="faq-accordion-item" data-faq-index="8">
+            <button type="button" class="faq-question-btn" aria-expanded="false" aria-controls="faq-ans-8">
+              <span class="faq-q-text">How does the 3D Golden Noir design adapt to low-power or mobile devices?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq-answer-panel" id="faq-ans-8" hidden>
+              <div class="faq-answer-inner">
+                CampusPulse respects the system <code>prefers-reduced-motion</code> setting and automatically switches to simplified transforms on touch screens to maximize battery life and maintain 60 FPS performance.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================= -->
+  <!-- ITEM DETAIL MODAL DIALOG -->
+  <!-- ========================================================= -->
+  <div class="modal-backdrop" id="detailModalBackdrop" aria-hidden="true" style="display:none;">
+    <div class="modal-container" id="detailModalContainer" role="dialog" aria-modal="true" aria-labelledby="modalDetailTitle">
+      <button type="button" class="modal-close-btn" id="modalCloseBtn" aria-label="Close details dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="modal-body" id="modalDetailBody">
+        <!-- Injected dynamically by script.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- CONFIRMATION CLEAR MODAL -->
+  <!-- ========================================================= -->
+  <div class="modal-backdrop" id="confirmModalBackdrop" aria-hidden="true" style="display:none;">
+    <div class="modal-container confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+      <h3 class="confirm-title" id="confirmTitle">Clear All Saved Activities?</h3>
+      <p class="confirm-text">This will remove all bookmarked items from your local semester schedule. This action cannot be undone.</p>
+      <div class="confirm-actions">
+        <button type="button" class="btn btn-secondary" id="confirmCancelBtn">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirmProceedBtn">Yes, Clear All</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- GLOBAL FOOTER -->
+  <!-- ========================================================= -->
+  <footer class="global-footer" role="contentinfo">
+    <div class="container footer-container">
+      <div class="footer-top-grid">
+        <div class="footer-brand-col">
+          <div class="brand-link">
+            <div class="brand-icon-box">
+              <svg class="brand-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect width="40" height="40" rx="8" fill="var(--color-gold-deep)"/>
+                <path d="M7 21H13L17 11L23 29L27 21H33" stroke="#0A0A0A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="brand-text">
+              <span class="brand-title">CAMPUS<span class="brand-highlight">PULSE</span></span>
+              <span class="brand-sub">COORDINATION HUB</span>
+            </div>
+          </div>
+          <p class="footer-bio">
+            The Golden Noir coordination platform for universities. Real-time discovery, schedule vaults, and club broadcasting crafted for ambitious students.
+          </p>
+          <div class="footer-status-tag">
+            <span class="status-pulse-dot" aria-hidden="true"></span>
+            <span>Local Vault Status: Online & Synchronized</span>
+          </div>
+        </div>
+
+        <div class="footer-links-col">
+          <h4 class="footer-col-title">Navigation</h4>
+          <ul class="footer-nav-list">
+            <li><a href="#/home">Home Landing</a></li>
+            <li><a href="#/discover">Discover Opportunities</a></li>
+            <li><a href="#/my-activities">My Activities Vault</a></li>
+            <li><a href="#/submit">Submit New Event</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links-col">
+          <h4 class="footer-col-title">Resources & Info</h4>
+          <ul class="footer-nav-list">
+            <li><a href="#/how-it-works">How It Works</a></li>
+            <li><a href="#/about">About & Accessibility</a></li>
+            <li><a href="#/faq">Frequently Asked Questions</a></li>
+            <li><a href="#/discover" id="footerExploreLink">Latest Opportunities</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links-col">
+          <h4 class="footer-col-title">Design Craft</h4>
+          <p class="footer-craft-note">
+            Built with Golden Noir styling, CSS 3D perspectives, tactile button physics, and zero external runtime dependencies.
+          </p>
+          <button type="button" class="btn btn-secondary btn-sm back-to-top-btn" id="backToTopBtn">
+            <svg viewBox="0 0 20 20" fill="currentColor" class="btn-icon" aria-hidden="true"><path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd"/></svg>
+            <span>Back to Top</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div class="footer-copy">
+          &copy; 2026 CampusPulse &bull; Smart Campus Coordination Hub. All rights reserved.
+        </div>
+        <div class="footer-meta">
+          <span>Offline-Ready Client SPA</span>
+          <span class="meta-separator">&bull;</span>
+          <span>WCAG AA Calibrated</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./script.js"></script>
+</body>
+</html>
